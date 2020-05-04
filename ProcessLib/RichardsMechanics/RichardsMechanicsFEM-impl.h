@@ -385,7 +385,7 @@ void RichardsMechanicsLocalAssembler<
 
         double const k_rel =
             medium->property(MPL::PropertyType::relative_permeability)
-                .template value<double>(variables, x_position, t, dt);
+                .template value<Eigen::Vector2d>(variables, x_position, t, dt)[0];
 
         auto const mu = liquid_phase.property(MPL::PropertyType::viscosity)
                             .template value<double>(variables, x_position, t, dt);
@@ -718,7 +718,7 @@ void RichardsMechanicsLocalAssembler<ShapeFunctionDisplacement,
 
         double const k_rel =
             medium->property(MPL::PropertyType::relative_permeability)
-                .template value<double>(variables, x_position, t, dt);
+                .template value<Eigen::Vector2d>(variables, x_position, t, dt)[0];
         auto const mu = liquid_phase.property(MPL::PropertyType::viscosity)
                             .template value<double>(variables, x_position, t, dt);
         auto const K_intrinsic = MPL::formEigenTensor<DisplacementDim>(
@@ -835,9 +835,9 @@ void RichardsMechanicsLocalAssembler<ShapeFunctionDisplacement,
 
         double const dk_rel_dS_l =
             medium->property(MPL::PropertyType::relative_permeability)
-                .template dValue<double>(variables,
+                .template dValue<Eigen::Vector2d>(variables,
                                          MPL::Variable::liquid_saturation,
-                                         x_position, t, dt);
+                                         x_position, t, dt)[0];
         typename ShapeMatricesTypeDisplacement::GlobalDimVectorType const
             grad_p_cap = -dNdx_p * p_L;
         local_Jac
@@ -1430,7 +1430,7 @@ void RichardsMechanicsLocalAssembler<ShapeFunctionDisplacement,
                 .value(variables, x_position, t, dt));
         double const k_rel =
             medium->property(MPL::PropertyType::relative_permeability)
-                .template value<double>(variables, x_position, t, dt);
+                .template value<Eigen::Vector2d>(variables, x_position, t, dt)[0];
 
         GlobalDimMatrixType const K_over_mu = k_rel * K_intrinsic / mu;
 
